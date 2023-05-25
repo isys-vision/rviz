@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         distro: [noetic]
-        ogre: ["1.9", "1.12"]
+        ogre: ["1.9", "1.12", "13.6"]
         include:
           - distro: noetic
             ogre: 1.9
@@ -24,6 +24,7 @@ jobs:
     env:
       CXXFLAGS: "-Werror -Wall -Wextra -Wwrite-strings -Wunreachable-code -Wpointer-arith -Wredundant-decls -Wno-strict-aliasing -Wno-sign-compare"
       UPSTREAM_WORKSPACE: github:rhaschke/python_qt_binding#silent-external-warnings
+      AFTER_INIT: ${{ startsWith(matrix.ogre, '13') && 'apt install -q -y software-properties-common && add-apt-repository ppa:s-schmeisser/ogre-13 -y' || ''}}
       AFTER_INSTALL_TARGET_DEPENDENCIES: apt install -qq -y libogre-${{ matrix.ogre }}-dev
       CATKIN_LINT: true
       CCACHE_DIR: ${{ github.workspace }}/.ccache
